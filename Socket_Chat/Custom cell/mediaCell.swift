@@ -17,7 +17,5 @@ class mediaCell: UICollectionViewCell {
         // Initialization code
     }
     
-    override func prepareForReuse() {
-        self.imgMedia = nil
-    }
+
 }
