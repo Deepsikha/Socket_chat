@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileViewController" customModule="Socket_Chat" customModuleProvider="target">
             <connections>
+                <outlet property="btnNext" destination="UWb-PJ-nGi" id="xOA-Yc-gPp"/>
                 <outlet property="collectionMedia" destination="lpr-UA-Bum" id="5XJ-YO-BmN"/>
                 <outlet property="imgBackGround" destination="Ofb-h8-C67" id="xU6-xW-m4o"/>
                 <outlet property="imgProfile" destination="fKR-Ny-olI" id="nwB-fs-iuY"/>
@@ -30,7 +31,7 @@
                     </constraints>
                 </imageView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="right.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="fKR-Ny-olI">
-                    <rect key="frame" x="100" y="250" width="120" height="120"/>
+                    <rect key="frame" x="100" y="217" width="120" height="120"/>
                     <color key="backgroundColor" red="1" green="0.75989182690000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="120" id="HKe-93-yQU"/>
@@ -38,7 +39,7 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@USERNAME" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wd6-H1-hzZ">
-                    <rect key="frame" x="102" y="377" width="114" height="21"/>
+                    <rect key="frame" x="102" y="360" width="114" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="114" id="Rq8-Lb-PgP"/>
                     </constraints>
@@ -50,7 +51,6 @@
                     <rect key="frame" x="0.0" y="404" width="320" height="76"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="320" id="E1n-UF-cgI"/>
                         <constraint firstAttribute="height" constant="76" id="j6v-ve-aYc"/>
                     </constraints>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8ic-SD-fzn">
@@ -72,15 +72,27 @@
                 <constraint firstItem="lpr-UA-Bum" firstAttribute="top" secondItem="Ofb-h8-C67" secondAttribute="bottom" id="FPS-Ga-WFm"/>
                 <constraint firstItem="Ofb-h8-C67" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PMb-J7-3lP"/>
                 <constraint firstItem="Ofb-h8-C67" firstAttribute="centerX" secondItem="fKR-Ny-olI" secondAttribute="centerX" id="RVe-zG-0PK"/>
+                <constraint firstAttribute="trailing" secondItem="wd6-H1-hzZ" secondAttribute="trailing" constant="104" id="YKt-tM-2U7"/>
                 <constraint firstAttribute="trailing" secondItem="Ofb-h8-C67" secondAttribute="trailing" id="ba5-hS-RpO"/>
-                <constraint firstItem="wd6-H1-hzZ" firstAttribute="top" secondItem="fKR-Ny-olI" secondAttribute="bottom" constant="7" id="duN-cW-fAh"/>
-                <constraint firstItem="wd6-H1-hzZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="102" id="iTU-g7-oMJ"/>
-                <constraint firstItem="lpr-UA-Bum" firstAttribute="top" secondItem="wd6-H1-hzZ" secondAttribute="bottom" constant="6" id="lE5-Zr-G8u"/>
-                <constraint firstItem="lpr-UA-Bum" firstAttribute="top" secondItem="fKR-Ny-olI" secondAttribute="bottom" constant="34" id="qP8-gi-Iq6"/>
+                <constraint firstItem="wd6-H1-hzZ" firstAttribute="top" secondItem="fKR-Ny-olI" secondAttribute="bottom" constant="23" id="duN-cW-fAh"/>
+                <constraint firstItem="wd6-H1-hzZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="102" id="frF-fp-GTa"/>
+                <constraint firstItem="lpr-UA-Bum" firstAttribute="top" secondItem="wd6-H1-hzZ" secondAttribute="bottom" constant="23" id="lE5-Zr-G8u"/>
+                <constraint firstItem="lpr-UA-Bum" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="orU-ik-grh"/>
+                <constraint firstItem="lpr-UA-Bum" firstAttribute="top" secondItem="fKR-Ny-olI" secondAttribute="bottom" constant="67" id="qP8-gi-Iq6"/>
                 <constraint firstAttribute="bottom" secondItem="lpr-UA-Bum" secondAttribute="bottom" id="s35-mw-17D"/>
+                <constraint firstAttribute="trailing" secondItem="lpr-UA-Bum" secondAttribute="trailing" id="zw0-gw-tYG"/>
             </constraints>
             <point key="canvasLocation" x="38" y="91"/>
         </view>
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UWb-PJ-nGi">
+            <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <state key="normal" title="Next"/>
+            <connections>
+                <action selector="handleBtnNext:" destination="-1" eventType="touchUpInside" id="wOb-zy-Xbm"/>
+            </connections>
+            <point key="canvasLocation" x="355" y="232"/>
+        </button>
     </objects>
     <resources>
         <image name="imgApp.jpg" width="1920" height="1080"/>

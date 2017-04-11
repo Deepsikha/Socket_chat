@@ -9,10 +9,11 @@
 import UIKit
 
 class ProfileViewController: UIViewController,UIScrollViewDelegate,UICollectionViewDelegate, UICollectionViewDataSource {
-        
+    
     @IBOutlet var collectionMedia: UICollectionView!
     @IBOutlet var imgBackGround: UIImageView!
     @IBOutlet var imgProfile: UIImageView!
+    @IBOutlet var btnNext: UIButton!
     
     var media: [String] = ["right.jpg","imgApp.jpg","","","","","","","","","","","","",""]
     override func viewDidLoad() {
@@ -23,12 +24,16 @@ class ProfileViewController: UIViewController,UIScrollViewDelegate,UICollectionV
         blurView.frame = self.imgBackGround.bounds
         blurView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
         self.imgBackGround.addSubview(blurView)
+        self.title = "Profile"
         
         collectionMedia.delegate = self
         collectionMedia.dataSource = self
         collectionMedia.register(UINib(nibName:"mediaCell",bundle:nil), forCellWithReuseIdentifier: "mediaCell")
+        
+        let item1 = UIBarButtonItem(customView: btnNext)
+        self.navigationItem.setRightBarButtonItems([item1], animated: true)
     }
-
+    
     //MARK:- Collection Delegate
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
@@ -40,7 +45,7 @@ class ProfileViewController: UIViewController,UIScrollViewDelegate,UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    
+        
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -54,6 +59,13 @@ class ProfileViewController: UIViewController,UIScrollViewDelegate,UICollectionV
     func collectionView(_ collectionView : UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let cellSize: CGSize = CGSize(width: 65, height: 65)
         return cellSize
+    }
+    
+    //MARK:- Outlet Method
+    
+    @IBAction func handleBtnNext(_ sender: Any) {
+        let nav = ProfileViewController()
+        self.navigationController?.pushViewController(nav, animated: true)
     }
     
 }

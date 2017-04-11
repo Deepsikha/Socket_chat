@@ -17,5 +17,4 @@ class mediaCell: UICollectionViewCell {
         // Initialization code
     }
     
-
 }
