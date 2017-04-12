@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import SocketRocket
 
-class HomeScreenViewController: UIViewController, SlidingContainerViewControllerDelegate {
+class HomeScreenViewController: UIViewController, SlidingContainerViewControllerDelegate , SRWebSocketDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        sendInitMsg()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -51,6 +52,17 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
         return vc
     }
     
+    func sendInitMsg(){
+        do {
+            var dic:[String:Any]!
+            dic = ["senderId":123456789,"type":"initConnection"]
+            let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
+            Constants.websocket.send(NSData(data: jsonData))
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     // MARK: SlidingContainerViewControllerDelegate
     
     func slidingContainerViewControllerDidMoveToViewController(_ slidingContainerViewController: SlidingContainerViewController, viewController: UIViewController, atIndex: Int) {
@@ -63,6 +75,40 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     
     func slidingContainerViewControllerDidHideSliderView(_ slidingContainerViewController: SlidingContainerViewController) {
         
+    }
+    
+    func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
+        print(dic!)
+        do {
+            var dic1:[String:Any]!
+            var jsonData: Data!
+            switch dic1!["type"] as! String {
+                case "error":
+                
+                break
+                case "authErr":
+                
+                break
+                case "connected":
+                break
+                case "history":
+                
+                break
+                case "msgAck":
+                
+                break
+                case "message":
+                
+                
+                break
+                case "readMsgAck":
+                
+                break
+                default: break
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     override func didReceiveMemoryWarning() {
