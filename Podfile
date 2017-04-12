@@ -6,8 +6,8 @@ target 'Socket_Chat' do
   use_frameworks!
 
   # Pods for Socket_Chat
-    pod “SocketRocket”
-    pod “JSQMessagesViewController”
+    pod "SocketRocket"
+    pod "JSQMessagesViewController"
     pod 'DKImagePickerController'
 
 
