@@ -61,7 +61,7 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         self.collectionView.reloadData()
         do {
             var dic:[String:Any]!
-            dic = ["senderId":123456789,"message":"hello","recieverId":987654321,"type":"message"]
+            dic = ["senderId":senderId,"message":text,"recieverId":123456789,"type":"message"]
             let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
             Constants.websocket.send(NSData(data: jsonData))
         } catch {

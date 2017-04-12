@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+        connect()
         Util.copyFile("Socket_chat.sqlite")
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let nav = UINavigationController()
@@ -26,27 +26,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
     }
 
     func webSocketDidOpen(_ webSocket: SRWebSocket!) {
-        print("Connected")
-        do {
-            var dic:[String:Any]!
-            dic = ["senderId":987654321,"type":"initConnection"]
-            let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
-            // here "jsonData" is the dictionary encoded in JSON data
-            webSocket.send(NSData(data: jsonData))
-        } catch {
-            print(error.localizedDescription)
-        }
+//        print("Connected")
+//        do {
+//            var dic:[String:Any]!
+//            dic = ["senderId":987654321,"type":"initConnection"]
+//            let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
+//            // here "jsonData" is the dictionary encoded in JSON data
+//            webSocket.send(NSData(data: jsonData))
+//        } catch {
+//            print(error.localizedDescription)
+//        }
     }
     
     func connect(){
-        Constants.websocket = SRWebSocket(url: URL(string: "https://udtwcwkuru.localtunnel.me"))
+        Constants.websocket = SRWebSocket(url: URL(string: "https://arrmxcobhw.localtunnel.me"))
         Constants.websocket.delegate = self
         Constants.websocket.open()
     }
     
     func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
-        let dic = convertToDictionary(text: message as! String)
-        print(dic!)
+//        let dic = convertToDictionary(text: message as! String)
+//        print(dic!)
     }
     
     func convertToDictionary(text: String) -> [String: Any]? {
