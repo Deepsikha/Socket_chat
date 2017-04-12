@@ -23,9 +23,21 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        AppDelegate.websocket.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        self.senderId = "987654321"
+        self.senderId = "123456789"
         self.senderDisplayName = "Master"
+        let a = ModelManager.getInstance().getData("chat", "\(senderId!)", "987654321", "message")
+        for i in a {
+            let ob = i as AnyObject
+            if ob.value(forKey: "sender_id") as! String == senderId {
+                let message = JSQMessage(senderId: ob.value(forKey: "sender_id") as! String, displayName: "Master" , text: ob.value(forKey: "message") as! String)
+                    messages.append(message!)
+            } else {
+                let message = JSQMessage(senderId: ob.value(forKey: "sender_id") as! String, displayName: "name" , text: ob.value(forKey: "message") as! String)
+                    messages.append(message!)
+            }
+        }
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
@@ -61,9 +73,10 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         self.collectionView.reloadData()
         do {
             var dic:[String:Any]!
-            dic = ["senderId":senderId,"message":text,"recieverId":123456789,"type":"message"]
+            dic = ["senderId":Int(self.senderId)!,"message":text,"recieverId":987654321,"type":"message"]
             let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
-            Constants.websocket.send(NSData(data: jsonData))
+            AppDelegate.websocket.send(NSData(data: jsonData))
+            ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: dic!["senderId"]!)),\(String(describing: dic!["recieverId"]!)),\'\(String(describing: dic!["message"]!))\',\'\(Date().addingTimeInterval(5.5))\'")
         } catch {
             print(error.localizedDescription)
         }
@@ -180,42 +193,6 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
     }
     
     func addphoto(){
-//        let allAssets = PHAsset.fetchAssets(with: PHAssetMediaType.video, options: nil)
-//        var evenAssetIds = [String]()
-//        
-//        allAssets.enumerateObjects({ (asset, idx, stop) -> Void in
-//            if idx % 2 == 0 {
-//                evenAssetIds.append(asset.localIdentifier)
-//            }
-//        })
-//        
-//        let vc = BSImagePickerViewController()
-//        
-//        
-//        bs_presentImagePickerController(vc, animated: true,
-//                                        select: { (asset: PHAsset) -> Void in
-//                                            print("Selected: \(asset)")
-//        }, deselect: { (asset: PHAsset) -> Void in
-//            print("Deselected: \(asset)")
-//        }, cancel: { (assets: [PHAsset]) -> Void in
-//            print("Cancel: \(assets)")
-//        }, finish: { (assets: [PHAsset]) -> Void in
-//            for i in assets {
-//                i.requestContentEditingInput(with: nil, completionHandler: { (asset, info) in
-//                    let imageURL = asset?.fullSizeImageURL
-//                    let item = JSQPhotoMediaItem()
-//                    do {
-//                        let data = try Data.init(contentsOf: imageURL!)
-//                        item.image = UIImage(data: data)
-//                    } catch {
-//                        print("error")
-//                    }
-//                    self.addMedia(item)
-//                })
-//            }
-//
-//        }, completion: nil)
-//        self.collectionView.reloadData()
         self.present(pickerController, animated: true) {}
         pickerController.didSelectAssets = { (assets: [DKAsset]) in
             print("didSelectAssets")
@@ -236,10 +213,10 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
                         image = UIImage(data: data)
                         let photoItem = JSQPhotoMediaItem(image: image)
                         self.addMedia(photoItem!)
-                    }
-                })
+                        }
+                    })
+                }
             }
-        }
 
         }
     }
@@ -254,7 +231,7 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         do {
             var dic1:[String:Any]!
             var jsonData: Data!
-            switch dic1!["type"] as! String {
+            switch dic!["type"] as! String {
                 case "error":
                 
                 break
@@ -263,20 +240,14 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
                 break
                 case "connected":
                 break
-                case "history":
-                    
-                dic1 = ["senderId":123456789,"message":"hello","recieverId":987654321,"type":"readMsgAck"]
-                jsonData = try JSONSerialization.data(withJSONObject: dic1, options: .prettyPrinted)
-                Constants.websocket.send(NSData(data: jsonData))
-                break
                 case "msgAck":
                 
                 break
                 case "message":
-                let message = JSQMessage(senderId: dic!["author"] as! String, senderDisplayName: "Kt", date: Date(), text: dic!["text"] as! String)
+                    let message = JSQMessage(senderId: String(describing: dic!["author"]), senderDisplayName: "Kt", date: Date(), text: dic!["text"] as! String)
                 self.messages.append(message!)
+                ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: dic!["author"]!)),\(senderId!),\'\(String(describing: dic!["text"]!))\',\'\(String(describing: dic!["time"]!))\'")
                 collectionView.reloadData()
-                
                 break
                 case "readMsgAck":
                 

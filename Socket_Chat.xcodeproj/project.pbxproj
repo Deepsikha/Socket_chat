@@ -14,7 +14,6 @@
 		5CE625291E961E7500B35147 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE625211E961E7500B35147 /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5CE6252A1E961E7500B35147 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE625241E961E7500B35147 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5CE6252B1E961E7500B35147 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5CE625251E961E7500B35147 /* Info.plist */; };
-		5CE625311E96218E00B35147 /* Chat.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 5CE625301E96218E00B35147 /* Chat.sqlite */; };
 		5CE625331E9621E700B35147 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CE625321E9621E700B35147 /* libsqlite3.0.tbd */; };
 		5CF4AAAF1E9DEFCA005DE8FC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CF4AAAE1E9DEFCA005DE8FC /* Constants.swift */; };
 		6E536DD9CCA8E6AFB09067C5 /* Pods_Socket_Chat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E545FA097DD947B3F024D49C /* Pods_Socket_Chat.framework */; };
@@ -108,7 +107,6 @@
 		5CE625231E961E7500B35147 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
 		5CE625241E961E7500B35147 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
 		5CE625251E961E7500B35147 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5CE625301E96218E00B35147 /* Chat.sqlite */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Chat.sqlite; sourceTree = "<group>"; };
 		5CE625321E9621E700B35147 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		5CF4AAAE1E9DEFCA005DE8FC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		7BB93C181E9CB3960025E856 /* SlidingContainerSliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SlidingContainerSliderView.swift; sourceTree = "<group>"; };
@@ -369,7 +367,6 @@
 				7D8834991E96068000974134 /* Assets.xcassets */,
 				7D88349B1E96068100974134 /* LaunchScreen.storyboard */,
 				5CE625141E960F9900B35147 /* Socket_Chat-BridgingHeader.h */,
-				5CE625301E96218E00B35147 /* Chat.sqlite */,
 			);
 			path = "Supporting File";
 			sourceTree = "<group>";
@@ -528,7 +525,6 @@
 			files = (
 				5CE6252B1E961E7500B35147 /* Info.plist in Resources */,
 				7D2F894F1E9CF67800B26804 /* ContactListViewController.xib in Resources */,
-				5CE625311E96218E00B35147 /* Chat.sqlite in Resources */,
 				7D2F89141E9CC26800B26804 /* UserViewCell.xib in Resources */,
 				7DF8DE2B1E97A2F8001DA73C /* right.jpg in Resources */,
 				7D2F89511E9CF67800B26804 /* HomeScreenViewController.xib in Resources */,

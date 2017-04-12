@@ -43,10 +43,11 @@ class ModelManager: NSObject {
 
     }
     
-    func getCommentData(_ tableName : String,_ postid : String) -> NSMutableArray {
+    func getData(_ tableName : String,_ sender_id : String,_ reciever_id : String, _ data : String) -> NSMutableArray {
         sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where postId=\(postid)", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) WHERE sender_id =\(reciever_id) OR receiver_id = \(reciever_id)", withArgumentsIn: nil)
         let marrStudentInfo : NSMutableArray = NSMutableArray()
+        var msg = [String]()
         if (resultSet != nil) {
             while resultSet.next() {
                 var dic:[String:Any]? = [:]
@@ -54,10 +55,13 @@ class ModelManager: NSObject {
                     dic?[String(resultSet.columnName(for: i))] = resultSet.string(forColumn: resultSet.columnName(for: i))
                 }
                 marrStudentInfo.add(dic!)
+//                for _ in 0..<resultSet.columnCount() {
+//                    msg.append(String(describing: resultSet))
+//                }
             }
         }
         sharedInstance.database!.close()
-        return marrStudentInfo
+        return marrStudentInfo as! NSMutableArray
     }
 
     func check(_ tableName: String,_ param : String,_ id: Int) -> Bool{
