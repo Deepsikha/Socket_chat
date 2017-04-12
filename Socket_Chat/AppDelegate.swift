@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
         Util.copyFile("Socket_chat.sqlite")
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let nav = UINavigationController()
-        nav.pushViewController(ProfileViewController(), animated: true)
+        nav.pushViewController(HomeScreenViewController(), animated: true)
         window?.rootViewController = nav
         window?.makeKeyAndVisible()
         return true
