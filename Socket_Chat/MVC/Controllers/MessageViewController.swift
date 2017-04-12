@@ -24,8 +24,8 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationManager.requestWhenInUseAuthorization()
-        self.senderId = "sasda"
-        self.senderDisplayName = "sddfdfssdf"
+        self.senderId = "987654321"
+        self.senderDisplayName = "Master"
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
@@ -273,6 +273,9 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
                 
                 break
                 case "message":
+                let message = JSQMessage(senderId: dic!["author"] as! String, senderDisplayName: "Kt", date: Date(), text: dic!["text"] as! String)
+                self.messages.append(message!)
+                collectionView.reloadData()
                 
                 break
                 case "readMsgAck":
