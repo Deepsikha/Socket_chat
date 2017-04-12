@@ -13,7 +13,6 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
 
     var window: UIWindow?
-    var websocket : SRWebSocket!
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
@@ -32,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
             var dic:[String:Any]!
             dic = ["senderId":987654321,"type":"initConnection"]
             let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
-            // here “jsonData” is the dictionary encoded in JSON data
+            // here "jsonData" is the dictionary encoded in JSON data
             webSocket.send(NSData(data: jsonData))
         } catch {
             print(error.localizedDescription)
@@ -40,9 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
     }
     
     func connect(){
-        websocket = SRWebSocket(url: URL(string: "https://udtwcwkuru.localtunnel.me"))
-        websocket.delegate = self
-        websocket.open()
+        Constants.websocket = SRWebSocket(url: URL(string: "https://udtwcwkuru.localtunnel.me"))
+        Constants.websocket.delegate = self
+        Constants.websocket.open()
     }
     
     func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {

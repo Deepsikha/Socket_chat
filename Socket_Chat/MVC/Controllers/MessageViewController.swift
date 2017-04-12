@@ -11,8 +11,9 @@ import JSQMessagesViewController
 import CoreLocation
 import Photos
 import DKImagePickerController
+import SocketRocket
 
-class MessageViewController: JSQMessagesViewController {
+class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
     
     let pickerController = DKImagePickerController()
     let locationManager = CLLocationManager()
@@ -25,8 +26,6 @@ class MessageViewController: JSQMessagesViewController {
         locationManager.requestWhenInUseAuthorization()
         self.senderId = "sasda"
         self.senderDisplayName = "sddfdfssdf"
-        
-
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
@@ -60,6 +59,14 @@ class MessageViewController: JSQMessagesViewController {
         let message = JSQMessage(senderId: senderId, displayName: senderDisplayName, text: text)
         messages.append(message!)
         self.collectionView.reloadData()
+        do {
+            var dic:[String:Any]!
+            dic = ["senderId":123456789,"message":"hello","recieverId":987654321,"type":"message"]
+            let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
+            Constants.websocket.send(NSData(data: jsonData))
+        } catch {
+            print(error.localizedDescription)
+        }
         self.finishSendingMessage(animated : true)
     }
     
@@ -87,7 +94,7 @@ class MessageViewController: JSQMessagesViewController {
         
         let sheet = UIAlertController(title: "Media messages", message: nil, preferredStyle: .actionSheet)
         
-        let photoAction = UIAlertAction(title: "Send photo", style: .default) { (action) in
+        let photoAction = UIAlertAction(title: "Send Photo/Video", style: .default) { (action) in
             /**
              *  Create fake photo
              */
@@ -237,6 +244,57 @@ class MessageViewController: JSQMessagesViewController {
         }
     }
 
+    func webSocket(_ webSocket: SRWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean: Bool) {
+        print("Code: \(code)\nReason: \(reason)")
+    }
+    
+    func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
+        let dic = convertToDictionary(text: message as! String)
+        print(dic!)
+        do {
+            var dic1:[String:Any]!
+            var jsonData: Data!
+            switch dic1!["type"] as! String {
+                case "error":
+                
+                break
+                case "authErr":
+                
+                break
+                case "connected":
+                break
+                case "history":
+                    
+                dic1 = ["senderId":123456789,"message":"hello","recieverId":987654321,"type":"readMsgAck"]
+                jsonData = try JSONSerialization.data(withJSONObject: dic1, options: .prettyPrinted)
+                Constants.websocket.send(NSData(data: jsonData))
+                break
+                case "msgAck":
+                
+                break
+                case "message":
+                
+                break
+                case "readMsgAck":
+                
+                break
+                default: break
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
