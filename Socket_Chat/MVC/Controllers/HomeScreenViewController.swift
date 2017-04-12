@@ -1,23 +1,27 @@
-//
-//  HomeScreenViewController.swift
-//  Socket_Chat
-//
-//  Created by Developer88 on 4/7/17.
-//  Copyright © 2017 LaNet. All rights reserved.
-//
-
 import UIKit
+import SocketRocket
 
-class HomeScreenViewController: UIViewController, SlidingContainerViewControllerDelegate {
+class HomeScreenViewController: UIViewController, SlidingContainerViewControllerDelegate,SRWebSocketDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        connect()
+    }
+    
+    func sendInitMsg(){
+        do {
+            var dic:[String:Any]!
+            dic = ["senderId":123456789,"type":"initConnection"]
+            let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
+            AppDelegate.websocket.send(NSData(data: jsonData))
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        AppDelegate.websocket.delegate = self
         let slidingContainerViewController = SlidingContainerViewController (
             parent: self,
             contentViewControllers: [ChatViewController(), UserProfileViewController(), ContactsViewController()],
@@ -51,6 +55,22 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
         return vc
     }
     
+    func webSocketDidOpen(_ webSocket: SRWebSocket!) {
+        print("Connected")
+        sendInitMsg()
+        
+    }
+    
+    func connect(){
+        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://rahzacwzzg.localtunnel.me"))
+        AppDelegate.websocket.delegate = self
+        AppDelegate.websocket.open()
+    }
+    
+    func webSocket(_ webSocket: SRWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean: Bool) {
+        print("closed")
+    }
+    
     // MARK: SlidingContainerViewControllerDelegate
     
     func slidingContainerViewControllerDidMoveToViewController(_ slidingContainerViewController: SlidingContainerViewController, viewController: UIViewController, atIndex: Int) {
@@ -70,7 +90,24 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK: SRWebSocketDelegate methods
     
+    func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
+        let dic = convertToDictionary(text: message as! String)
+        print(dic!)
+        
+    }
+    
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
+    }
     
     
 }
