@@ -26,18 +26,19 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         AppDelegate.websocket.delegate = self
         locationManager.requestWhenInUseAuthorization()
         self.senderId = "123456789"
-        self.senderDisplayName = "Master"
+        self.senderDisplayName = "MIKE"
         let a = ModelManager.getInstance().getData("chat", "\(senderId!)", "987654321", "message")
         for i in a {
             let ob = i as AnyObject
             if ob.value(forKey: "sender_id") as! String == senderId {
-                let message = JSQMessage(senderId: ob.value(forKey: "sender_id") as! String, displayName: "Master" , text: ob.value(forKey: "message") as! String)
+                let message = JSQMessage(senderId: ob.value(forKey: "sender_id") as! String, displayName: "MIKE" , text: ob.value(forKey: "message") as! String)
                     messages.append(message!)
             } else {
                 let message = JSQMessage(senderId: ob.value(forKey: "sender_id") as! String, displayName: "name" , text: ob.value(forKey: "message") as! String)
                     messages.append(message!)
             }
         }
+
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageDataForItemAt indexPath: IndexPath!) -> JSQMessageData! {
