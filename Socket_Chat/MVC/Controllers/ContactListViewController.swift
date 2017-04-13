@@ -10,6 +10,8 @@ import UIKit
 
 class ContactListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    var contact = [String]()
+    
     @IBOutlet var tblvw: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +27,7 @@ class ContactListViewController: UIViewController, UITableViewDelegate, UITableV
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tblvw.dequeueReusableCell(withIdentifier: "ContactViewCell", for: indexPath) as! ContactViewCell
+        cell.usernm.text = contact[indexPath.row]
         return cell
     }
     

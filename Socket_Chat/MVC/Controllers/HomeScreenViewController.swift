@@ -62,7 +62,7 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     }
     
     func connect(){
-        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://rahzacwzzg.localtunnel.me"))
+        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://hvympnylwa.localtunnel.me"))
         AppDelegate.websocket.delegate = self
         AppDelegate.websocket.open()
     }
@@ -95,7 +95,35 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
         let dic = convertToDictionary(text: message as! String)
         print(dic!)
-        
+        do {
+            var dic1:[String:Any]!
+            var jsonData: Data!
+            switch dic!["type"] as! String {
+            case "error":
+                
+                break
+            case "authErr":
+                
+                break
+            case "connected":
+                break
+            case "msgAck":
+                
+                break
+            case "message":
+//                let message = JSQMessage(senderId: String(describing: dic!["author"]), senderDisplayName: "Kt", date: Date(), text: dic!["text"] as! String)
+//                self.messages.append(message!)
+//                ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: dic!["author"]!)),\(senderId!),\'\(String(describing: dic!["text"]!))\',\'\(String(describing: dic!["time"]!))\'")
+//                collectionView.reloadData()
+                break
+            case "readMsgAck":
+                
+                break
+            default: break
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     func convertToDictionary(text: String) -> [String: Any]? {
