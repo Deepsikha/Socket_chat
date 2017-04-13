@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
     
     var window: UIWindow?
     static var websocket: SRWebSocket!
-    static var senderId = "8454644"
+    static var senderId = "9610555504"
     static var senderDisplayName = "Master"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {

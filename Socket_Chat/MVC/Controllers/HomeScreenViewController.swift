@@ -14,7 +14,7 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     func sendInitMsg(){
         do {
             var dic:[String:Any]!
-            dic = ["senderId":8454644,"type":"initConnection"]
+            dic = ["senderId":9610555504,"type":"initConnection"]
             let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
             AppDelegate.websocket.send(NSData(data: jsonData))
         } catch {
@@ -65,7 +65,7 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     }
     
     func connect(){
-        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://etjlovsizf.localtunnel.me"))
+        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://fdaxspvtff.localtunnel.me"))
         AppDelegate.websocket.delegate = self
         AppDelegate.websocket.open()
     }

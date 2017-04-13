@@ -26,7 +26,7 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         super.viewDidLoad()
         AppDelegate.websocket.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        self.senderId = "8454644"
+        self.senderId = "9610555504"
         self.senderDisplayName = "Master"
         let a = ModelManager.getInstance().getData("chat", "\(self.senderId!)", "\(MessageViewController.reciever_id!)", "message")
         for i in a {

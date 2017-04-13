@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		27525F2E9C72AC418674DA88 /* Pods_Socket_ChatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A4E5CE5D9902A762C134259 /* Pods_Socket_ChatUITests.framework */; };
-		5CC7037F1E9F640E00934BDC /* Socket_chat.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 5CC7037E1E9F640E00934BDC /* Socket_chat.sqlite */; };
 		5CE625261E961E7500B35147 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE6251B1E961E7500B35147 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5CE625271E961E7500B35147 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE6251D1E961E7500B35147 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5CE625281E961E7500B35147 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE6251F1E961E7500B35147 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -94,7 +93,7 @@
 		09619CDA49965D86741463FC /* Pods-Socket_ChatUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Socket_ChatUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Socket_ChatUITests/Pods-Socket_ChatUITests.release.xcconfig"; sourceTree = "<group>"; };
 		0A4E5CE5D9902A762C134259 /* Pods_Socket_ChatUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Socket_ChatUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		204A1B966A5B6946C433495B /* Pods_Socket_ChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Socket_ChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5CC7037E1E9F640E00934BDC /* Socket_chat.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Socket_chat.sqlite; sourceTree = "<group>"; };
+		5C2EEF3B1E9FAEC800E710F8 /* Socket_chat.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Socket_chat.sqlite; sourceTree = "<group>"; };
 		5CE625141E960F9900B35147 /* Socket_Chat-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Socket_Chat-BridgingHeader.h"; sourceTree = "<group>"; };
 		5CE6251A1E961E7500B35147 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		5CE6251B1E961E7500B35147 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
@@ -362,7 +361,7 @@
 		7D8834C71E96075500974134 /* Supporting File */ = {
 			isa = PBXGroup;
 			children = (
-				5CC7037E1E9F640E00934BDC /* Socket_chat.sqlite */,
+				5C2EEF3B1E9FAEC800E710F8 /* Socket_chat.sqlite */,
 				7D88349E1E96068100974134 /* Info.plist */,
 				7D8834991E96068000974134 /* Assets.xcassets */,
 				7D88349B1E96068100974134 /* LaunchScreen.storyboard */,
@@ -539,7 +538,6 @@
 				7D2F89551E9CF67800B26804 /* UserProfileViewController.xib in Resources */,
 				7D2F895B1E9CF6E300B26804 /* ChatListCell.xib in Resources */,
 				7D2F89541E9CF67800B26804 /* RegisterViewController.xib in Resources */,
-				5CC7037F1E9F640E00934BDC /* Socket_chat.sqlite in Resources */,
 				7D88349A1E96068000974134 /* Assets.xcassets in Resources */,
 				7D2F895D1E9CF6E300B26804 /* ContactViewCell.xib in Resources */,
 			);

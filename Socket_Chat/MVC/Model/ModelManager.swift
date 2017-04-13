@@ -45,7 +45,7 @@ class ModelManager: NSObject {
     
     func getlatest(_ tableName : String , _ sender_id : String , _ receiver_id : String) -> NSMutableArray{
         sharedInstance.database?.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where sender_id = \(sender_id) OR sender_id = \(receiver_id) and receiver_id = \(receiver_id) OR receiver_id = \(sender_id) ORDER BY rowid DESC LIMIT 1", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where sender_id = \(sender_id) AND receiver_id = \(receiver_id) OR sender_id = \(receiver_id) AND receiver_id = \(sender_id) ORDER BY rowid DESC LIMIT 1", withArgumentsIn: nil)
         let marrStudentInfo : NSMutableArray = NSMutableArray()
         
         if (resultSet != nil) {
@@ -114,5 +114,20 @@ class ModelManager: NSObject {
         }
         sharedInstance.database!.close()
         return marrStudentInfo
+    }
+    func getCount(_ tblName: String,_ condition: String,_ countCol: String) -> [String:Any] {
+        sharedInstance.database!.open()
+        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT COUNT(\(countCol)) FROM \(tblName) WHERE \(condition)", withArgumentsIn: nil)
+        var dic = [String:Any]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                
+                for i in 0..<resultSet.columnCount() {
+                    dic[resultSet.columnName(for: i)] = resultSet.string(forColumn: resultSet.columnName(for: i))
+                }
+            }
+        }
+        sharedInstance.database!.close()
+        return dic
     }
 }
