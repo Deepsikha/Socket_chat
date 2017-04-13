@@ -1,7 +1,10 @@
 import UIKit
 import SocketRocket
+import JSQMessagesViewController
 
 class HomeScreenViewController: UIViewController, SlidingContainerViewControllerDelegate,SRWebSocketDelegate {
+    
+    static var messages = [JSQMessage]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -11,7 +14,7 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     func sendInitMsg(){
         do {
             var dic:[String:Any]!
-            dic = ["senderId":123456789,"type":"initConnection"]
+            dic = ["senderId":8454644,"type":"initConnection"]
             let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
             AppDelegate.websocket.send(NSData(data: jsonData))
         } catch {
@@ -62,7 +65,7 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     }
     
     func connect(){
-        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://hvympnylwa.localtunnel.me"))
+        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://etjlovsizf.localtunnel.me"))
         AppDelegate.websocket.delegate = self
         AppDelegate.websocket.open()
     }
@@ -96,7 +99,7 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
         let dic = convertToDictionary(text: message as! String)
         print(dic!)
         do {
-            var dic1:[String:Any]!
+            var count:[String:Any]!
             var jsonData: Data!
             switch dic!["type"] as! String {
             case "error":
@@ -111,10 +114,13 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
                 
                 break
             case "message":
-//                let message = JSQMessage(senderId: String(describing: dic!["author"]), senderDisplayName: "Kt", date: Date(), text: dic!["text"] as! String)
-//                self.messages.append(message!)
-//                ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: dic!["author"]!)),\(senderId!),\'\(String(describing: dic!["text"]!))\',\'\(String(describing: dic!["time"]!))\'")
-//                collectionView.reloadData()
+                for i in dic!["data"] as! NSArray {
+                    let a = i as AnyObject
+                    _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(AppDelegate.senderId),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\'")
+                    ChatViewController.sender = (a.value(forKey: "sender_id") as! Int)
+                }
+                
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
                 break
             case "readMsgAck":
                 
@@ -124,6 +130,7 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
         } catch {
             print(error.localizedDescription)
         }
+        
     }
     
     func convertToDictionary(text: String) -> [String: Any]? {

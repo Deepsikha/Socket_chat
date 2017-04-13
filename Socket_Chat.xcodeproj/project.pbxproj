@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		27525F2E9C72AC418674DA88 /* Pods_Socket_ChatUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A4E5CE5D9902A762C134259 /* Pods_Socket_ChatUITests.framework */; };
+		5CC7037F1E9F640E00934BDC /* Socket_chat.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 5CC7037E1E9F640E00934BDC /* Socket_chat.sqlite */; };
 		5CE625261E961E7500B35147 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE6251B1E961E7500B35147 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5CE625271E961E7500B35147 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE6251D1E961E7500B35147 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5CE625281E961E7500B35147 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CE6251F1E961E7500B35147 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -47,7 +48,6 @@
 		7D2F895B1E9CF6E300B26804 /* ChatListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D2F89571E9CF6E300B26804 /* ChatListCell.xib */; };
 		7D2F895C1E9CF6E300B26804 /* ContactViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D2F89581E9CF6E300B26804 /* ContactViewCell.swift */; };
 		7D2F895D1E9CF6E300B26804 /* ContactViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D2F89591E9CF6E300B26804 /* ContactViewCell.xib */; };
-		7D7466221E9760FB00A48536 /* Socket_chat.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 7D7466211E9760FB00A48536 /* Socket_chat.sqlite */; };
 		7D8834931E96068000974134 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D8834921E96068000974134 /* AppDelegate.swift */; };
 		7D88349A1E96068000974134 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7D8834991E96068000974134 /* Assets.xcassets */; };
 		7D88349D1E96068100974134 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D88349B1E96068100974134 /* LaunchScreen.storyboard */; };
@@ -94,6 +94,7 @@
 		09619CDA49965D86741463FC /* Pods-Socket_ChatUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Socket_ChatUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Socket_ChatUITests/Pods-Socket_ChatUITests.release.xcconfig"; sourceTree = "<group>"; };
 		0A4E5CE5D9902A762C134259 /* Pods_Socket_ChatUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Socket_ChatUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		204A1B966A5B6946C433495B /* Pods_Socket_ChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Socket_ChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5CC7037E1E9F640E00934BDC /* Socket_chat.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Socket_chat.sqlite; sourceTree = "<group>"; };
 		5CE625141E960F9900B35147 /* Socket_Chat-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Socket_Chat-BridgingHeader.h"; sourceTree = "<group>"; };
 		5CE6251A1E961E7500B35147 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		5CE6251B1E961E7500B35147 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
@@ -139,7 +140,6 @@
 		7D2F89571E9CF6E300B26804 /* ChatListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatListCell.xib; sourceTree = "<group>"; };
 		7D2F89581E9CF6E300B26804 /* ContactViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactViewCell.swift; sourceTree = "<group>"; };
 		7D2F89591E9CF6E300B26804 /* ContactViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactViewCell.xib; sourceTree = "<group>"; };
-		7D7466211E9760FB00A48536 /* Socket_chat.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = Socket_chat.sqlite; sourceTree = "<group>"; };
 		7D88348F1E96068000974134 /* Socket_Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Socket_Chat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D8834921E96068000974134 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7D8834991E96068000974134 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
@@ -362,7 +362,7 @@
 		7D8834C71E96075500974134 /* Supporting File */ = {
 			isa = PBXGroup;
 			children = (
-				7D7466211E9760FB00A48536 /* Socket_chat.sqlite */,
+				5CC7037E1E9F640E00934BDC /* Socket_chat.sqlite */,
 				7D88349E1E96068100974134 /* Info.plist */,
 				7D8834991E96068000974134 /* Assets.xcassets */,
 				7D88349B1E96068100974134 /* LaunchScreen.storyboard */,
@@ -533,13 +533,13 @@
 				7D2F894E1E9CF67800B26804 /* ChatViewController.xib in Resources */,
 				7DF8DE241E977EE6001DA73C /* imgApp.jpg in Resources */,
 				7D2F89531E9CF67800B26804 /* ProfileViewController.xib in Resources */,
-				7D7466221E9760FB00A48536 /* Socket_chat.sqlite in Resources */,
 				7D2F89521E9CF67800B26804 /* MessageViewController.xib in Resources */,
 				7D2F89181E9CC2B500B26804 /* mediaCell.xib in Resources */,
 				7D2F894D1E9CF67800B26804 /* ChatListViewController.xib in Resources */,
 				7D2F89551E9CF67800B26804 /* UserProfileViewController.xib in Resources */,
 				7D2F895B1E9CF6E300B26804 /* ChatListCell.xib in Resources */,
 				7D2F89541E9CF67800B26804 /* RegisterViewController.xib in Resources */,
+				5CC7037F1E9F640E00934BDC /* Socket_chat.sqlite in Resources */,
 				7D88349A1E96068000974134 /* Assets.xcassets in Resources */,
 				7D2F895D1E9CF6E300B26804 /* ContactViewCell.xib in Resources */,
 			);

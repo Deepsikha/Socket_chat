@@ -43,6 +43,24 @@ class ModelManager: NSObject {
 
     }
     
+    func getlatest(_ tableName : String , _ sender_id : String , _ receiver_id : String) -> NSMutableArray{
+        sharedInstance.database?.open()
+        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where sender_id = \(sender_id) OR sender_id = \(receiver_id) and receiver_id = \(receiver_id) OR receiver_id = \(sender_id) ORDER BY rowid DESC LIMIT 1", withArgumentsIn: nil)
+        let marrStudentInfo : NSMutableArray = NSMutableArray()
+        
+        if (resultSet != nil) {
+            while resultSet.next() {
+                var dic:[String:Any]? = [:]
+                for i in 0..<resultSet.columnCount() {
+                    dic?[String(resultSet.columnName(for: i))] = resultSet.string(forColumn: resultSet.columnName(for: i))
+                }
+                marrStudentInfo.add(dic!)
+            }
+        }
+        sharedInstance.database!.close()
+        return marrStudentInfo 
+    }
+    
     func getData(_ tableName : String,_ sender_id : String,_ reciever_id : String, _ data : String) -> NSMutableArray {
         sharedInstance.database!.open()
         let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) WHERE sender_id =\(reciever_id) OR receiver_id = \(reciever_id)", withArgumentsIn: nil)
