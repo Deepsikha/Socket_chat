@@ -13,7 +13,7 @@ class ChatListCell: UITableViewCell {
     @IBOutlet var imgvw: UIImageView!
     @IBOutlet var contactNm: UILabel!
     @IBOutlet var lstmsg: UILabel!
-    
+    @IBOutlet var msgcount: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
