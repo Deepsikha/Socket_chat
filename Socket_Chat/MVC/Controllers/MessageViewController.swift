@@ -20,6 +20,7 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
     var messages = [JSQMessage]()
     lazy var outgoingBubbleImageView: JSQMessagesBubbleImage = self.setupOutgoingBubble()
     lazy var incomingBubbleImageView: JSQMessagesBubbleImage = self.setupIncomingBubble()
+    static var reciever_id : Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +28,7 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         locationManager.requestWhenInUseAuthorization()
         self.senderId = "123456789"
         self.senderDisplayName = "Master"
-        let a = ModelManager.getInstance().getData("chat", "\(senderId!)", "987654321", "message")
+        let a = ModelManager.getInstance().getData("chat", "\(senderId!)", "\(MessageViewController.reciever_id)", "message")
         for i in a {
             let ob = i as AnyObject
             if ob.value(forKey: "sender_id") as! String == senderId {
@@ -73,7 +74,7 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         self.collectionView.reloadData()
         do {
             var dic:[String:Any]!
-            dic = ["senderId":Int(self.senderId)!,"message":text,"recieverId":987654321,"type":"message"]
+            dic = ["senderId":Int(self.senderId)!,"message":text,"recieverId":MessageViewController.reciever_id,"type":"message"]
             let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
             AppDelegate.websocket.send(NSData(data: jsonData))
             ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: dic!["senderId"]!)),\(String(describing: dic!["recieverId"]!)),\'\(String(describing: dic!["message"]!))\',\'\(Date().addingTimeInterval(5.5))\'")
@@ -232,27 +233,27 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
             var dic1:[String:Any]!
             var jsonData: Data!
             switch dic!["type"] as! String {
-                case "error":
+            case "error":
                 
                 break
-                case "authErr":
+            case "authErr":
                 
                 break
-                case "connected":
+            case "connected":
                 break
-                case "msgAck":
+            case "msgAck":
                 
                 break
-                case "message":
-                    let message = JSQMessage(senderId: String(describing: dic!["author"]), senderDisplayName: "Kt", date: Date(), text: dic!["text"] as! String)
+            case "message":
+                let message = JSQMessage(senderId: String(describing: dic!["author"]), senderDisplayName: "Kt", date: Date(), text: dic!["text"] as! String)
                 self.messages.append(message!)
                 ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: dic!["author"]!)),\(senderId!),\'\(String(describing: dic!["text"]!))\',\'\(String(describing: dic!["time"]!))\'")
                 collectionView.reloadData()
                 break
-                case "readMsgAck":
+            case "readMsgAck":
                 
                 break
-                default: break
+            default: break
             }
         } catch {
             print(error.localizedDescription)
@@ -272,6 +273,5 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        
     }
 }
