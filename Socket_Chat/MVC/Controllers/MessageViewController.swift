@@ -26,13 +26,13 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         super.viewDidLoad()
         AppDelegate.websocket.delegate = self
         locationManager.requestWhenInUseAuthorization()
-        self.senderId = "123456789"
-
-        self.senderDisplayName = "Master"
-        let a = ModelManager.getInstance().getData("chat", "\(senderId!)", "\(MessageViewController.reciever_id)", "message")
+        self.senderId = AppDelegate.senderId
+        self.senderDisplayName = AppDelegate.senderDisplayName
+        let a = ModelManager.getInstance().getData("chat", "\(self.senderId!)", "\(MessageViewController.reciever_id!)", "message")
         for i in a {
             let ob = i as AnyObject
-            if ob.value(forKey: "sender_id") as! String == senderId {
+
+            if ob.value(forKey: "sender_id") as! String == self.senderId {
                 let message = JSQMessage(senderId: ob.value(forKey: "sender_id") as! String, displayName: "MIKE" , text: ob.value(forKey: "message") as! String)
                     messages.append(message!)
             } else {
@@ -98,7 +98,7 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
         let message = messages[indexPath.item] // 1
-        if message.senderId == senderId { // 2
+        if message.senderId == self.senderId { // 2
             return outgoingBubbleImageView
         } else { // 3
             return incomingBubbleImageView
@@ -247,9 +247,17 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
                 
                 break
             case "message":
-                let message = JSQMessage(senderId: String(describing: dic!["author"]), senderDisplayName: "Kt", date: Date(), text: dic!["text"] as! String)
-                self.messages.append(message!)
-                ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: dic!["author"]!)),\(senderId!),\'\(String(describing: dic!["text"]!))\',\'\(String(describing: dic!["time"]!))\'")
+                for i in dic!["data"] as! NSArray {
+                    let a = i as AnyObject
+                    
+                    if (a.value(forKey: "sender_id") as! Int) ==  MessageViewController.reciever_id {
+                        _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(senderId!),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\'")
+                        let message = JSQMessage(senderId: String(describing: a.value(forKey: "sender_id")!), senderDisplayName: "Kt", date: Date(), text: String(describing: a.value(forKey: "message")!))
+                        self.messages.append(message!)
+                    } else {
+                        _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(senderId!),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\'")
+                    }
+                }
                 collectionView.reloadData()
                 break
             case "readMsgAck":

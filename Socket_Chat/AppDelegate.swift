@@ -14,6 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
     
     var window: UIWindow?
     static var websocket: SRWebSocket!
+    static var senderId = "8454649"
+    static var senderDisplayName = "MIKE"
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //connect()
         Util.copyFile("Socket_chat.sqlite")
@@ -31,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
     }
     
     func connect(){
-        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://ivdoplkqmn.localtunnel.me"))
+        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://zyksiueabm.localtunnel.me"))
         AppDelegate.websocket.delegate = self
         AppDelegate.websocket.open()
     }
