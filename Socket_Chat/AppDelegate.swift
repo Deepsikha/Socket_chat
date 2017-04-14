@@ -14,11 +14,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
     
     var window: UIWindow?
     static var websocket: SRWebSocket!
-    static var senderId = "8454644"
+    static var senderId = 9610555504
     static var senderDisplayName = "Master"
+    static let app = UIApplication.shared
+    static var count : Int!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         //connect()
+        let count = ModelManager.getInstance().getCount("chat", "status = \'false\'", "status")
+        AppDelegate.app.applicationIconBadgeNumber = Int(count["COUNT(status)"] as! String)!
         Util.copyFile("Socket_chat.sqlite")
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let nav = UINavigationController()
@@ -60,11 +64,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate,SRWebSocketDelegate {
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        
+        let count = ModelManager.getInstance().getCount("chat", "status = \'false\'", "status")
+        AppDelegate.app.applicationIconBadgeNumber = Int(count["COUNT(status)"] as! String)!
+
+        AppDelegate.websocket.sendPing(nil)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+       
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {

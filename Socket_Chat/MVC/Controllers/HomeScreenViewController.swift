@@ -1,12 +1,20 @@
 import UIKit
 import SocketRocket
 import JSQMessagesViewController
+import UserNotifications
 
 class HomeScreenViewController: UIViewController, SlidingContainerViewControllerDelegate,SRWebSocketDelegate {
-    
+    var isGrantedNotificationAccess:Bool = false
     static var messages = [JSQMessage]()
     
+    
+    
     override func viewDidLoad() {
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge], completionHandler: {
+            (granted,error) in
+            self.isGrantedNotificationAccess = granted
+        })
         super.viewDidLoad()
         connect()
     }
@@ -14,12 +22,32 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     func sendInitMsg(){
         do {
             var dic:[String:Any]!
-            dic = ["senderId":8454644,"type":"initConnection"]
+            dic = ["senderId":9610555504,"type":"initConnection"]
+            
             let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
             AppDelegate.websocket.send(NSData(data: jsonData))
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    func sendnotification(_ senderId : String , _ message : String) {
+        let content = UNMutableNotificationContent()
+        content.title = NSString.localizedUserNotificationString(forKey: "\(senderId)", arguments: nil)
+        content.body = NSString.localizedUserNotificationString(forKey: "\(message)", arguments: nil)
+        content.sound = UNNotificationSound.default()
+//        content.badge = (UIApplication.shared.applicationIconBadgeNumber + 1) as NSNumber;
+        //content.setValue("YES", forKeyPath: "shouldAlwaysAlertWhileAppIsForeground")
+        
+        let trigger = UNTimeIntervalNotificationTrigger(
+            timeInterval: 1.0,
+            repeats: false)
+        AppDelegate.app.applicationIconBadgeNumber = AppDelegate.app.applicationIconBadgeNumber + 1
+        
+        let request = UNNotificationRequest.init(identifier: "testTriggerNotif", content: content, trigger: trigger)
+        
+        let center = UNUserNotificationCenter.current()
+        center.add(request)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -60,12 +88,13 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
     
     func webSocketDidOpen(_ webSocket: SRWebSocket!) {
         print("Connected")
+        if(AppDelegate.websocket.readyState == SRReadyState.OPEN) {
         sendInitMsg()
-        
+        }
     }
     
     func connect(){
-        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://etjlovsizf.localtunnel.me"))
+        AppDelegate.websocket = SRWebSocket(url: URL(string: "https://gvmmlfwgza.localtunnel.me"))
         AppDelegate.websocket.delegate = self
         AppDelegate.websocket.open()
     }
@@ -109,6 +138,19 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
                 
                 break
             case "connected":
+                let a = ModelManager.getInstance().senddataserver("chat")
+                for i in a {
+                    let ob = i as AnyObject
+                        var dic:[String:Any]!
+                        dic = ["senderId": ob.value(forKey: "sender_id")! as! Int,"message": ob.value(forKey: "message")! as! String,"recieverId": ob.value(forKey: "receiver_id")! as! Int,"type":"message"]
+                        let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
+                        if(AppDelegate.websocket.readyState != SRReadyState.CLOSED) {
+                            AppDelegate.websocket.send(NSData(data:jsonData))
+                            
+                            ModelManager.getInstance().updateData("chat", "ack = 1", "ack = 0 and rowid = \(String(describing: ob.value(forKey: "id")!))")
+                        }
+                }
+                
                 break
             case "msgAck":
                 
@@ -116,8 +158,9 @@ class HomeScreenViewController: UIViewController, SlidingContainerViewController
             case "message":
                 for i in dic!["data"] as! NSArray {
                     let a = i as AnyObject
-                    _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(AppDelegate.senderId),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\'")
+                    _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time,status", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(AppDelegate.senderId),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\',\'false\'")
                     ChatViewController.sender = (a.value(forKey: "sender_id") as! Int)
+                    sendnotification((String(describing: a.value(forKey: "sender_id") as! Int)),(String(describing: a.value(forKey: "message")!)))
                 }
                 
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
