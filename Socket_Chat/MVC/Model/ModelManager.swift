@@ -26,12 +26,11 @@ class ModelManager: NSObject {
         
     }
    
-    func updateData(_ studentInfo: AnyObject) -> Bool {
-//        sharedInstance.database!.open()
-//        let isUpdated = sharedInstance.database!.executeUpdate("UPDATE student_info SET Name=?, Marks=? WHERE RollNo=?", withArgumentsIn: [studentInfo.Name, studentInfo.Marks, studentInfo.RollNo])
-//        sharedInstance.database!.close()
-//        return isUpdated
-        return true
+    func updateData(_ tblName: String,_ changeField: String,_ condition: String) -> Bool {
+        sharedInstance.database!.open()
+        let isUpdated = sharedInstance.database!.executeUpdate("UPDATE \(tblName) set \(changeField) WHERE \(condition)")
+        sharedInstance.database!.close()
+        return isUpdated
     }
     
     func deleteData(_ studentInfo: AnyObject) -> Bool {
@@ -43,18 +42,45 @@ class ModelManager: NSObject {
 
     }
     
-    func getlatest(_ tableName : String , _ sender_id : String , _ receiver_id : String) -> NSMutableArray{
+    func senddataserver(_ tableName : String) -> NSMutableArray{
         sharedInstance.database?.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where sender_id = \(sender_id) AND receiver_id = \(receiver_id) OR sender_id = \(receiver_id) AND receiver_id = \(sender_id) ORDER BY rowid DESC LIMIT 1", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where ack = 0", withArgumentsIn: nil)
+        _ = sharedInstance.database!.executeQuery("", withArgumentsIn: nil)
         let marrStudentInfo : NSMutableArray = NSMutableArray()
-        
+        var dic = [String:Any]()
         if (resultSet != nil) {
             while resultSet.next() {
-                var dic:[String:Any]? = [:]
+                
                 for i in 0..<resultSet.columnCount() {
-                    dic?[String(resultSet.columnName(for: i))] = resultSet.string(forColumn: resultSet.columnName(for: i))
+                    if resultSet.columnName(for: i) == "sender_id" || resultSet.columnName(for: i) == "receiver_id" {
+                        dic[resultSet.columnName(for: i)] = Int(resultSet.string(forColumn: resultSet.columnName(for: i)))
+                    } else {
+                        dic[resultSet.columnName(for: i)] = resultSet.string(forColumn: resultSet.columnName(for: i))
+                    }
                 }
-                marrStudentInfo.add(dic!)
+                marrStudentInfo.add(dic)
+            }
+        }
+        sharedInstance.database!.close()
+        return marrStudentInfo
+    }
+    
+    func getlatest(_ tableName : String , _ sender_id : Int , _ receiver_id : Int) -> NSMutableArray{
+        sharedInstance.database?.open()
+        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where sender_id = \(sender_id) and receiver_id = \(receiver_id) or sender_id = \(receiver_id) and receiver_id = \(sender_id) ORDER BY rowid DESC LIMIT 1", withArgumentsIn: nil)
+        let marrStudentInfo : NSMutableArray = NSMutableArray()
+        var dic = [String:Any]()
+        if (resultSet != nil) {
+            while resultSet.next() {
+                
+                for i in 0..<resultSet.columnCount() {
+                    if resultSet.columnName(for: i) == "sender_id" || resultSet.columnName(for: i) == "receiver_id" {
+                        dic[resultSet.columnName(for: i)] = Int(resultSet.string(forColumn: resultSet.columnName(for: i)))
+                    } else {
+                        dic[resultSet.columnName(for: i)] = resultSet.string(forColumn: resultSet.columnName(for: i))
+                    }
+                }
+                marrStudentInfo.add(dic)
             }
         }
         sharedInstance.database!.close()
@@ -63,7 +89,7 @@ class ModelManager: NSObject {
     
     func getData(_ tableName : String,_ sender_id : String,_ reciever_id : String, _ data : String) -> NSMutableArray {
         sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) WHERE sender_id =\(reciever_id) OR receiver_id = \(reciever_id)", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where sender_id = \(sender_id) and receiver_id = \(reciever_id) or sender_id = \(reciever_id) and receiver_id = \(sender_id)", withArgumentsIn: nil)
         let marrStudentInfo : NSMutableArray = NSMutableArray()
         var msg = [String]()
         if (resultSet != nil) {
@@ -79,7 +105,7 @@ class ModelManager: NSObject {
             }
         }
         sharedInstance.database!.close()
-        return marrStudentInfo as! NSMutableArray
+        return marrStudentInfo 
     }
 
     func check(_ tableName: String,_ param : String,_ id: Int) -> Bool{
@@ -95,9 +121,10 @@ class ModelManager: NSObject {
 
     }
 
+    
     func getAllData(_ tableName : String) -> NSMutableArray {
         sharedInstance.database!.open()
-        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName)", withArgumentsIn: nil)
+        let resultSet: FMResultSet! = sharedInstance.database!.executeQuery("SELECT * FROM \(tableName) where user_id <> \(AppDelegate.senderId)", withArgumentsIn: nil)
         let marrStudentInfo : NSMutableArray = NSMutableArray()
         if (resultSet != nil) {
             while resultSet.next() {

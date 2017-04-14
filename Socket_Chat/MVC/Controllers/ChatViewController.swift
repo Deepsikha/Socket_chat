@@ -16,25 +16,15 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     var contactNumber : NSMutableArray!
     var last = [String]()
     var msgCount: [Int]! = []
-
+    var latest : NSMutableArray!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contactNumber = ModelManager.getInstance().getAllData("user")
+        countmsg()
         tblvw.register(UINib(nibName : "ChatListCell",bundle : nil), forCellReuseIdentifier: "ChatListCell")
         tblvw.delegate = self
         tblvw.dataSource = self
-        self.navigationController?.navigationBar.isHidden = true
-        let all = ModelManager.getInstance().getAllData("user")
-        let c = all.count
-        for i in 0..<c {
-            let contact = contactNumber.object(at: i) as AnyObject
-            let latest = ModelManager.getInstance().getlatest("chat" , "\(AppDelegate.senderId)" , "\(contact.value(forKey: "user_id") as! Int)")
-            if latest.count > 0 {
-                let obj = latest.lastObject as AnyObject
-                last.append(obj.value(forKey: "message") as! String)
-            }
-        }
+        self.navigationController?.navigationBar.isHidden = false
 //        for i in contact {
 //            let ob = i as AnyObject
 //            if ob.value(forKey: "sender_id") as! String == senderId {
@@ -45,7 +35,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
 //                messages.append(message!)
 //            }
 //        }
-        NotificationCenter.default.addObserver(self, selector: #selector(loadList), name: NSNotification.Name(rawValue: "load"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(countmsg), name: NSNotification.Name(rawValue: "load"), object: nil)
     }
     
     func countmsg() {
@@ -55,17 +45,12 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
             let a = i as AnyObject
             let count = ModelManager.getInstance().getCount("chat", "sender_id = \(a.value(forKey: "user_id") as! Int) AND status = \'false\'", "status")
             msgCount.append(Int(count["COUNT(status)"] as! String)!)
+            
         }
         contactNumber = zip(contactNumber, msgCount).sorted(by: { (a, b) -> Bool in
             return a.1 > b.1
         }) as! NSMutableArray
-//        tblvw.reloadData()
-        //        print(contactNumber)
-    }
-    
-    func loadList(){
-        countmsg()
-        self.tblvw.reloadData()
+        tblvw.reloadData()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -81,20 +66,29 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+       
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatListCell", for: indexPath) as! ChatListCell
         let contact = contactNumber.object(at: indexPath.row) as! (Any,Any)
-        cell.contactNm.text = String(describing: (contact.0 as AnyObject).value(forKey: "user_id") as! Int)
-        let latest = ModelManager.getInstance().getlatest("chat" , "\(AppDelegate.senderId)" , "\((contact.0 as AnyObject).value(forKey: "user_id") as! Int)")
-        var lastMsg: String!
-        var obj: AnyObject!
-        if latest.count > 0 {
-             obj = latest.lastObject as AnyObject
-            lastMsg = obj.value(forKey: "message") as! String
+    
+        if(AppDelegate.senderId != (contact.0 as AnyObject).value(forKey: "user_id")! as! Int) {
+            
+            cell.contactNm.text = String(describing: (contact.0 as AnyObject).value(forKey: "user_id") as! Int)
+             latest = ModelManager.getInstance().getlatest("chat" , (AppDelegate.senderId) , (contact.0 as AnyObject).value(forKey: "user_id")! as! Int)
+            var lastMsg: String!
+            var obj: AnyObject!
+            if latest.count > 0 {
+                if (latest.lastObject as AnyObject).count != 0 {
+                    obj = latest.lastObject as AnyObject
+                    lastMsg = obj.value(forKey: "message") as! String
+                }
+            }
+            if obj != nil && ((contact.0 as AnyObject).value(forKey : "user_id") as? Int == obj?.value(forKey: "sender_id")! as? Int || (contact.0 as AnyObject).value(forKey : "user_id") as? Int == obj?.value(forKey: "receiver_id")! as? Int) {
+                cell.lstmsg.text = lastMsg
+            }
+            cell.msgcount.text = String(describing: contact.1)
         }
-        if obj != nil && (!last.isEmpty && (contact.0 as AnyObject).value(forKey : "user_id") as? Int == Int(obj.value(forKey: "sender_id") as! String) || !last.isEmpty && (contact.0 as AnyObject).value(forKey : "user_id") as? Int == Int(obj.value(forKey: "receiver_id") as! String)) {
-            cell.lstmsg.text = lastMsg
-        }
-        cell.msgcount.text = String(describing: contact.1)
+        
+        
         return cell
     }
     
@@ -108,6 +102,7 @@ class ChatViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let contact = contactNumber.object(at: indexPath.row) as! (Any,Any)
+        _ = ModelManager.getInstance().updateData("chat","status = \'true\'","status = \'false\' and sender_id = \(((contact.0) as AnyObject).value(forKey: "user_id") as! Int)")
         MessageViewController.reciever_id = ((contact.0) as AnyObject).value(forKey: "user_id") as! Int
         self.navigationController?.pushViewController(MessageViewController(), animated: true)
     }

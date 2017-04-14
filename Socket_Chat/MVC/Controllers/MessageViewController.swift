@@ -24,6 +24,7 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = false
         AppDelegate.websocket.delegate = self
         locationManager.requestWhenInUseAuthorization()
         self.senderId = "9610555504"
@@ -76,11 +77,17 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
             var dic:[String:Any]!
             dic = ["senderId":Int(self.senderId)!,"message":text,"recieverId":MessageViewController.reciever_id,"type":"message"]
             let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
+            if(AppDelegate.websocket.readyState == SRReadyState.OPEN) {
             AppDelegate.websocket.send(NSData(data: jsonData))
-            ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: dic!["senderId"]!)),\(String(describing: dic!["recieverId"]!)),\'\(String(describing: dic!["message"]!))\',\'\(Date().addingTimeInterval(5.5))\'")
+            ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time,ack", "\(String(describing: dic!["senderId"]!)),\(String(describing: dic!["recieverId"]!)),\'\(String(describing: dic!["message"]!))\',\'\(Date().addingTimeInterval(5.5))\',1")
+            } else {
+                ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time,ack", "\(String(describing: dic!["senderId"]!)),\(String(describing: dic!["recieverId"]!)),\'\(String(describing: dic!["message"]!))\',\'\(Date().addingTimeInterval(5.5))\',0")
+            }
         } catch {
             print(error.localizedDescription)
         }
+            
+            
         self.finishSendingMessage(animated : true)
     }
     
@@ -214,6 +221,14 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
                         image = UIImage(data: data)
                         let photoItem = JSQPhotoMediaItem(image: image)
                         self.addMedia(photoItem!)
+                        do {
+                            var dic:[String:Any]!
+                            dic = ["senderId":Int(self.senderId)!,"imageData":data,"recieverId":MessageViewController.reciever_id,"type":"image"]
+                            let jsonData = try JSONSerialization.data(withJSONObject: dic, options: .prettyPrinted)
+                            AppDelegate.websocket.send(NSData(data: jsonData))
+                        } catch {
+                            print(error.localizedDescription)
+                            }
                         }
                     })
                 }
@@ -222,6 +237,8 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
         }
     }
 
+    
+    
     func webSocket(_ webSocket: SRWebSocket!, didCloseWithCode code: Int, reason: String!, wasClean: Bool) {
         print("Code: \(code)\nReason: \(reason)")
     }
@@ -249,11 +266,11 @@ class MessageViewController: JSQMessagesViewController, SRWebSocketDelegate {
                     let a = i as AnyObject
                     
                     if (a.value(forKey: "sender_id") as! Int) ==  MessageViewController.reciever_id {
-                        _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(senderId!),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\'")
+                        _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time,status", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(senderId!),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\',\'true\'")
                         let message = JSQMessage(senderId: String(describing: a.value(forKey: "sender_id")!), senderDisplayName: "Kt", date: Date(), text: String(describing: a.value(forKey: "message")!))
                         self.messages.append(message!)
                     } else {
-                        _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(senderId!),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\'")
+                        _ = ModelManager.getInstance().addData("chat", "sender_id,receiver_id,message,time,status", "\(String(describing: a.value(forKey: "sender_id") as! Int)),\(AppDelegate.senderId),\'\(String(describing: a.value(forKey: "message")!))\',\'\(String(describing: a.value(forKey: "time")!))\',\'false\'")
                     }
                 }
                 collectionView.reloadData()
